@@ -11,7 +11,7 @@ function autoload($class) {
     $class = str_replace('\\', '/', $class);
     if(substr($class, 0 , strlen('App')) == 'App'){
 
-        include __DIR__.'/../'. str_replace('App/', '/app/', $class). '.php';
+        include __DIR__.'/../'. str_replace('App/', 'app/', $class). '.php';
     }
 }
 
