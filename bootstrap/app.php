@@ -17,6 +17,25 @@ function autoload($class) {
 
 spl_autoload_register('autoload');
 
-$app = new Application();
+define('BASE_PATH', __DIR__.'/../');
+define('VIEW_PATH', __DIR__.'/../views');
+define('APP_PATH', __DIR__.'/../app');
+
+function parseEnvIniFile($file){
+    $config = parse_ini_file($file);
+    foreach($config as $key => $value){
+        if (getenv($key) === false){
+            putenv(sprintf('%s=%s', $key, $value));
+        }
+    }
+}
+
+$envFile = BASE_PATH.'.env.ini';
+
+if (file_exists($envFile)){
+
+    parseEnvIniFile($envFile);
+}
+$app = Application::initialize(__DIR__.'/../');
 
 return $app;

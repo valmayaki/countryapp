@@ -13,4 +13,9 @@ class Router
     {
         $this->routes[] = $route;
     }
+
+    function __call($name, $arguments)
+    {
+        
+    }
 }
