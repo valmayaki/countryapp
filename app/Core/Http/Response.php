@@ -87,4 +87,28 @@ class Response
         $this->body = $content;
         return $this;
     }
+    public function json($data = [], $status = 200, $headers = [])
+    {
+        $this->body = json_encode($data);
+        $this->status = $status;
+        $this->withHeaders($headers);
+        $this->withHeader('content-type', 'application/json');
+        return $this;
+    }
+    public function sendStatusCode()
+    {
+        http_response_code($this->status);
+    }
+    
+    public function redirect($url)
+    {
+        $this->withHeader('location', $url);
+        $this->withStatusCode(304);
+        return $this;
+    }
+    public function withStatusCode($code)
+    {
+        $this->status = $code;
+        return $this;
+    }
 }

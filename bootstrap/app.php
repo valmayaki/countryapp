@@ -22,20 +22,24 @@ define('VIEW_PATH', __DIR__.'/../views');
 define('APP_PATH', __DIR__.'/../app');
 
 function parseEnvIniFile($file){
-    $config = parse_ini_file($file);
-    foreach($config as $key => $value){
-        if (getenv($key) === false){
-            putenv(sprintf('%s=%s', $key, $value));
+    if(file_exists($file)) {
+
+        $config = parse_ini_file($file);
+        foreach($config as $key => $value){
+            if (getenv($key) === false){
+                putenv(sprintf('%s=%s', $key, $value));
+            }
         }
+
+    }else {
+        throw new InvalidArgumentException("{$file} does not exists");
     }
 }
 
-$envFile = BASE_PATH.'.env.ini';
+parseEnvIniFile(BASE_PATH.'.env.ini');
 
-if (file_exists($envFile)){
-
-    parseEnvIniFile($envFile);
-}
 $app = Application::initialize(__DIR__.'/../');
+
+require_once BASE_PATH.'/registrar/container.php';
 
 return $app;
