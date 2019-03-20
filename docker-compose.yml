@@ -4,6 +4,8 @@ services:
   database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - '33068:3306'
     environment: 
       - "MYSQL_ROOT_PASSWORD=secret"
       - "MYSQL_DATABASE=countryapp"
@@ -16,9 +18,12 @@ services:
     volumes:
       - ./:/var/www/html/
     ports: 
-      - "8050:80"
+      - '8050:80'
+    environment: 
+      - "DB_HOST=database"
     depends_on:
       - database
+      
   adminer:
     image: adminer
     restart: always
