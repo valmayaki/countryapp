@@ -16,7 +16,3 @@ $app->set('database', function($container){
     $connector->getConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $connector;
 });
-
-$app->set('connector', function($container){
-    return $container->get('$container')->getConnection();
-});
