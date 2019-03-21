@@ -1,18 +1,15 @@
 <?php
 
-class CreateUserTableMigration
+class CreatePasswordResetTableMigration
 {
     public function up()
     {
-        return "CREATE TABLE IF NOT EXISTS users (
+        return "CREATE TABLE IF NOT EXISTS password_reset (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            firstname VARCHAR(100) NOT NULL,
-            lastname VARCHAR(100) NOT NULL,
-            email VARCHAR(50) NOT NULL,
-            password VARCHAR(50) NOT NULL,
-            enable BOOLEAN NOT NULL DEFAULT 1,
+            email VARCHAR(100) NOT NULL,
+            token VARCHAR(100) NOT NULL,
             PRIMARY KEY  (id),
             UNIQUE KEY unique_email (email)
           );";
@@ -20,6 +17,6 @@ class CreateUserTableMigration
 
     public function down()
     {
-        return "DROP TABLE users";
+        return "DROP TABLE password_reset";
     }
 }
