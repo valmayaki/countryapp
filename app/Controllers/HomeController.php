@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Core\Http\Request;
 use App\Core\Http\Response;
@@ -18,14 +18,6 @@ class HomeController extends BaseController
      */
     public function index(Request $request, Response $response)
     {
-        $db = $this->app->get('database')->getConnection();
-        $sql = 'SELECT name, color, calories FROM fruit ORDER BY name';
-        var_dump($db->query($sql));
-        foreach ($db->query($sql) as $row) {
-            print $row['name'] . "\t";
-            print $row['color'] . "\t";
-            print $row['calories'] . "\n";
-        }
         $response->render('home.php');
     }
     /**
