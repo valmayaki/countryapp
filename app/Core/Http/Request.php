@@ -14,6 +14,7 @@ class Request
     protected $host;
     protected $schema = 'http';
     protected $fragments;
+    protected $requestData = [];
 
 
     function __construct($method = 'GET', $uri = 'http://localhost/', $body = '', $headers = [], $options = [])
@@ -26,6 +27,7 @@ class Request
         $this->queryString = isset($uriParts['query'])? $uriParts['query']: '';
         $this->host = isset($options['host'])? : isset($uriParts['host']) ? $uriParts['host']: '';
         $this->fragments = isset($options['fragment'])? : isset($uriParts['fragment']) ? $uriParts['fragment']: '';
+        $this->populateRequestData();
     }
 
     static function capture()
@@ -41,9 +43,28 @@ class Request
         if (array_key_exists('x-http-method-override', $headers)){
             $method = $headers['x-http-method-override'];
         }
+        if (isset($_SERVER['CONTENT_TYPE']) && !empty($_SERVER['CONTENT_TYPE'])){
+            $headers['content-type'] = $_SERVER['CONTENT_TYPE'];
+        }
+        
         $body = file_get_contents('php://input');
         $request  = new static($method, $path, $body, $headers);
+
         return $request;
+    }
+    public function populateRequestData()
+    {
+        if(!empty($_REQUEST)){
+            foreach($_REQUEST as $key => $value){
+                $this->requestData[$key] = $value;
+            }
+        }
+        if (isset($_SERVER['CONTENT_TYPE']) === 'application/json'){
+            $data = json_decode(file_get_contents('php://input'));
+            foreach($data as $key => $value){
+                $this->requestData[$key] = $value;
+            }
+        }
     }
 
     public function getHeader($name)
@@ -70,5 +91,22 @@ class Request
     public function getMethod()
     {
         return $this->method;
+    }
+    public function isAjax()
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+
+    public function has($key)
+    {
+       return array_key_exists($key,$this->requestData);
+    }
+
+    public function get($key)
+    {
+        if ($this->has($key)){
+            return $this->requestData[$key];
+        }
+        return null;
     }
 }
