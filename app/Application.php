@@ -126,9 +126,10 @@ class Application implements \ArrayAccess
      */
     public function resolveController($controller)
     {
+        $controllerNamespace = '\App\Controllers\\';
         if(is_string($controller)){
             $controllerParts = explode('@', $controller);
-            $class = '\App\Controller\\'.$controllerParts[0];
+            $class = $controllerNamespace.$controllerParts[0];
             if (class_exists($class)){
 
                 return  [new $class($this), $controllerParts[1]];
