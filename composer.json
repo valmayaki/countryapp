@@ -1,0 +1,16 @@
+{
+    "name": "valmayaki/countryapp",
+    "description": "A Project to show my vanila php skills",
+    "type": "project",
+    "require-dev": {},
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Valentine Mayaki",
+            "email": "mxvmayaki@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^8.0"
+    }
+}
