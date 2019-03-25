@@ -21,7 +21,6 @@ services:
       # - php.ini/:/usr/local/etc/php/conf.d/xdebug.ini
     ports: 
       - '8050:80'
-      - '9000:9000'
     environment: 
       - "DB_HOST=database"
       - 'XDEBUG_CONFIG="remote_host=host.docker.internal"'
