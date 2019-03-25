@@ -17,15 +17,21 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/var/www/html/
+      # - php.ini/:/usr/local/etc/php/php.ini
+      # - php.ini/:/usr/local/etc/php/conf.d/xdebug.ini
     ports: 
       - '8050:80'
+      - '9000:9000'
     environment: 
       - "DB_HOST=database"
+      - 'XDEBUG_CONFIG="remote_host=host.docker.internal"'
     depends_on:
       - database
       
   adminer:
     image: adminer
-    restart: always
+    # restart: always
+    environment:
+      - "ADMINER_DEFAULT_SERVER=database"
     ports:
       - 8080:8080
