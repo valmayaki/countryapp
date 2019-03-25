@@ -24,6 +24,7 @@ class Application implements \ArrayAccess
         $this->basePath = $basePath;
         $this->setUpRoutes();
         $this->setupConfig();
+        $this->startSession();
     }
     public function setupConfig()
     {
@@ -33,6 +34,10 @@ class Application implements \ArrayAccess
             $config[$name] = require $filename;
         }
         $this->set('config', $config);
+    }
+    public function startSession()
+    {
+        if ( ! session_id() ) @ session_start();
     }
 
     /**
@@ -51,11 +56,16 @@ class Application implements \ArrayAccess
 
         if (!is_null($route)){
 
+            $args =[$request, $response];
             $controller  = $this->resolveController($route->controller);
-            \call_user_func_array($controller, [$request, $response]);
+            if ($route->parameters){
+                array_push($args,...$route->parameters);
+            }
+            \call_user_func_array($controller, $args);
         }else{
             $response->render('404.php');
         }
+        session_write_close();
         return $response;
         
     }
@@ -159,5 +169,10 @@ class Application implements \ArrayAccess
 
     public function offsetGet($offset) {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    static public function getInstance(){
+
+        return static::$app;
     }
 }

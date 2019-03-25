@@ -29,6 +29,41 @@ class HomeController extends BaseController
      */
     public function dashboard(Request $request, Response $response)
     {
-        $response->render('dashboard.php');
+        $response->render('dashboard/index.php');
+    }
+    /**
+     * Display User Dashboard
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    public function forgotPassword(Request $request, Response $response)
+    {
+        $response->render('forgot-password.php');
+    }
+    /**
+     * Display User Dashboard
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    public function register(Request $request, Response $response)
+    {
+        $response->render('register.php');
+    }
+
+    /**
+     * Display User Dashboard
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    public function resetPassword(Request $request, Response $response)
+    {
+        $token = $request->get('token');
+        $response->render('reset-password.php',compact('token'));
     }
 }

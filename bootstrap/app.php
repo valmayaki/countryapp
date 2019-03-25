@@ -39,7 +39,12 @@ function parseEnvIniFile($file){
 parseEnvIniFile(BASE_PATH.'.env.ini');
 
 $app = Application::initialize(__DIR__.'/../');
-
+function include_view($string){
+    include app()->get('view_path'). '/' . $string;
+}
+function app(){
+    return Application::getInstance();
+}
 require_once BASE_PATH.'/registrar/container.php';
 
 return $app;

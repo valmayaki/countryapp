@@ -99,7 +99,7 @@ class Response
     {
         http_response_code($this->status);
     }
-    
+
     public function redirect($url)
     {
         $this->withHeader('location', $url);

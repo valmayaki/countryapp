@@ -5,6 +5,7 @@ class Route
     public $path;
     public $method;
     public $controller;
+    public $parameters = null;
     
     function __construct($method, $path, $controller)
     {
@@ -21,6 +22,16 @@ class Route
             $pattern .= '/';
         }
         $pattern .= '?$~';
-        return preg_match($pattern, $request->getPath()) &&  $this->method == $request->getMethod();
+        if (preg_match($pattern, $request->getPath(), $matches) &&  $this->method == $request->getMethod()){
+            array_shift($matches);
+            $this->setParameters($matches);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function setParameters($matches)
+    {
+        $this->parameters = $matches;
     }
 }

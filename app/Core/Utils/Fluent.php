@@ -5,11 +5,17 @@ namespace App\Core\Utils;
 class Fluent implements \ArrayAccess
 {
     protected $items = [];
-    function __construct($items)
+    protected $originalItem = [];
+    function __construct(&$items)
     {
-        foreach($items as $key => $value){
-            $this->items[$key] = $value;
+        if(is_array($items)) {
+            $this->items = $items;
+        }else {
+            foreach($items as $key => $value){
+                $this->items[$key] = $value;
+            }
         }
+        $this->originalItem = $items;
     }
     public function offsetSet($offset, $value) {
         if (is_null($offset)) {
@@ -50,6 +56,10 @@ class Fluent implements \ArrayAccess
     public function __unset($name)
     {
         unset($this->items[$name]);
+    }
+    public function has($key)
+    {
+        return array_key_exists($key, $this->items);
     }
 
 }

@@ -1,5 +1,6 @@
 <?php
 namespace App\Core\Utils;
+
 class Tokenizer 
 {
     static function file_get_php_classes($filepath,$onlypublic=true) {

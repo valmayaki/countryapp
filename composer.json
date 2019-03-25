@@ -12,5 +12,10 @@
     ],
     "require": {
         "phpunit/phpunit": "^8.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     }
 }
