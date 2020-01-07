@@ -1,5 +1,5 @@
 <?php include_view('dashboard/common/header.php'); ?>
-    <section class="app-content">
+    <section class="">
             <div class="form-container">
                 <?php if($error = app()->get('request')->has('message')) : ?>
                     <p class="<?php echo app()->get('request')->get('error')? 'error': 'success'?>"><?php echo app()->get('request')->get('message'); ?></p>

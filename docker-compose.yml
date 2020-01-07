@@ -1,6 +1,10 @@
 version: '3.5'
 
 services:
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "6379:6379"
   database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -17,15 +21,14 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/var/www/html/
-      # - php.ini/:/usr/local/etc/php/php.ini
-      # - php.ini/:/usr/local/etc/php/conf.d/xdebug.ini
     ports: 
       - '8050:80'
     environment: 
       - "DB_HOST=database"
-      - 'XDEBUG_CONFIG="remote_host=host.docker.internal"'
+      - 'XDEBUG_CONFIG="remote_host=host.docker.internal remote_enable=1"'
     depends_on:
       - database
+      # - redis
       
   adminer:
     image: adminer

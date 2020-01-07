@@ -1,5 +1,5 @@
 <?php
-
+require __DIR__.'/vendor/autoload.php';
 use App\Core\Utils\Tokenizer;
 
 define('MIGRATION_DIR', __DIR__.'/migrations/');

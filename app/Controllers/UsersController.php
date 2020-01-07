@@ -35,6 +35,21 @@ class UsersController extends BaseController
         }
         return $response->render('404');
     }
+    public function profile(Request $request, Response $response, $id)
+    {
+        $user = null;
+        $id = ($_SESSION['user_id']);
+        $db = $this->app->get('database');
+        $roles= $db->query("SELECT id, name from roles", PDO::FETCH_OBJ);
+        $sth = $db->prepare("SELECT * from users where id = :id");
+        $sth->execute(['id' => $id]);
+        $result = $sth->fetch(PDO::FETCH_OBJ);
+        if($result !== false || !empty($result)){
+            $user = $result;
+            return $response->render('dashboard/users/profile.php', compact('user', 'roles'));
+        }
+        return $response->render('404');
+    }
     public function update(Request $request, Response $response, $id)
     {
         $data = [];

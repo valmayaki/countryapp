@@ -64,6 +64,14 @@ class HomeController extends BaseController
     public function resetPassword(Request $request, Response $response)
     {
         $token = $request->get('token');
+        $db = $this->app->get('database');
+        $sth = $db->prepare("SELECT 1 FROM password_reset WHERE token = :token");
+        $sth->execute(['token'=> $token]);
+        $resetData = $sth->fetch(PDO::FETCH_ASSOC);
+        if($resetData === false || empty($resetData)){
+            $query = \http_build_query(['error'=> true, 'message' => 'Link is invalid or has expired', 'token' => $token]);
+            return $response->redirect('/reset-password?'. $query);
+        }
         $response->render('reset-password.php',compact('token'));
     }
 }

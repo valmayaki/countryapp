@@ -17,8 +17,8 @@ $app->set('database', function($container){
     $connector->getConnection()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $connector;
 });
-$app->set('session', function($container){
-    return new Fluent($_SESSION);
-});
+// $app->set('session', function($container){
+//     return new Fluent($_SESSION);
+// });
 
 $app->set('view_path', BASE_PATH. 'views' );

@@ -18,11 +18,13 @@ class AuthController extends BaseController
         $sth->execute(['email' => $_POST['email']]);
         $user = $sth->fetch(PDO::FETCH_ASSOC);
         if ($user === false || !password_verify($_POST['password'], $user['password'])){
-            $this->app->get('session')->error_message = "Wrong credentials provided";
-            $__SESSION['error_message'] = "Wrong credentials provided";
+            // $this->app->get('session')->error_message = "Wrong credentials provided";
+            $_SESSION['error_message'] = "Wrong credentials provided";
             $query = \http_build_query(['error' => true, 'message' => 'Wrong credentials provided']);
             return $response->redirect('/?'.$query);
-        }       
+        } 
+        // $this->app->get('session')->user_id = $user['id'];       
+        $_SESSION['user_id' ]= $user['id'];       
         return $response->redirect('/dashboard');
     }
     public function register(Request $request, Response $response)
@@ -62,6 +64,7 @@ class AuthController extends BaseController
             $query = http_build_query(['error'=>true, 'message' => 'Unable to create an account, please try again later']);
             return $response->redirect(sprintf('/register?%s', $query));
         };
+        $_SESSION['user_id' ]= $user['id'];
         // redirect to dashboard
         return $response->redirect('/dashboard');
     }
@@ -102,6 +105,13 @@ class AuthController extends BaseController
         }
         $query =\http_build_query(['error' => $error, 'message' => $message]);
         return $response->redirect('/forgot-password?'. $query);
+    }
+    public function logout(Request $request, Response $response)
+    {
+        // $this->app->get('session')->flush();
+        session_destroy();
+
+        return $response->redirect('/');
     }
 
     public function resetPassword(Request $request, Response $response)

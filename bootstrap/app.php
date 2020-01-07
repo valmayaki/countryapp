@@ -1,21 +1,7 @@
 <?php
 
 use App\Application;
-/**
- * Autoloads classes base on their namespace
- *
- * @param string $class
- * @return void
- */
-function autoload($class) {
-    $class = str_replace('\\', '/', $class);
-    if(substr($class, 0 , strlen('App')) == 'App'){
 
-        include __DIR__.'/../'. str_replace('App/', 'app/', $class). '.php';
-    }
-}
-
-spl_autoload_register('autoload');
 
 define('BASE_PATH', __DIR__.'/../');
 define('VIEW_PATH', __DIR__.'/../views');
@@ -38,7 +24,7 @@ function parseEnvIniFile($file){
 
 parseEnvIniFile(BASE_PATH.'.env.ini');
 
-$app = Application::initialize(__DIR__.'/../');
+$app = new Application(__DIR__.'/../');
 function include_view($string){
     include app()->get('view_path'). '/' . $string;
 }

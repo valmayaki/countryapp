@@ -61,5 +61,13 @@ class Fluent implements \ArrayAccess
     {
         return array_key_exists($key, $this->items);
     }
+    
+    public function remove($name)
+    {
+        unset($this->items[$name]);
+    }
 
+    public function flush(){
+        $this->items = [];
+    }
 }

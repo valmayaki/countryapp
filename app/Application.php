@@ -22,6 +22,8 @@ class Application implements \ArrayAccess
     function __construct($basePath)
     {
         $this->basePath = $basePath;
+        static::setInstance($this);
+        $this->instance('app', $this);
         $this->setUpRoutes();
         $this->setupConfig();
         $this->startSession();
@@ -37,7 +39,20 @@ class Application implements \ArrayAccess
     }
     public function startSession()
     {
-        if ( ! session_id() ) @ session_start();
+        if(session_status() == PHP_SESSION_NONE)
+        {
+            \session_start();
+        }
+    }
+
+    public static function setInstance(Application $app)
+    {
+        return static::$app = $app;
+    }
+
+    public function instance($key, $value)
+    {
+        return $this->set($key, $value);
     }
 
     /**
@@ -174,5 +189,9 @@ class Application implements \ArrayAccess
     static public function getInstance(){
 
         return static::$app;
+    }
+    public function flush()
+    {
+        $this->container = [];
     }
 }
